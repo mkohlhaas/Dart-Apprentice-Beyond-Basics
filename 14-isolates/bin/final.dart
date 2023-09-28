@@ -2,22 +2,23 @@ import 'dart:io';
 import 'dart:isolate';
 
 Future<void> main() async {
-  appStoppingSynchronousCode();
-  await appStoppingAsynchronousCode();
+  // appStoppingSynchronousCode();
+  // await appStoppingAsynchronousCode();
   await oneWayIsolateCommunication();
-  await sendingMultipleMessages();
-  await passingMultipleArgumentsAsList();
-  await passingMultipleArgumentsAsMap();
-  await twoWayCommunication();
+  // await sendingMultipleMessages();
+  // await passingMultipleArgumentsAsList();
+  // await passingMultipleArgumentsAsMap();
+  // await twoWayCommunication();
 }
 
 void appStoppingSynchronousCode() {
+  print('// appStoppingSynchronousCode');
   String playHideAndSeekTheLongVersion() {
     var counting = 0;
     for (var i = 1; i <= 10000000000; i++) {
       counting = i;
     }
-    return '$counting! Ready or not, here I come!';
+    return '$counting!\nReady or not, here I come!';
   }
 
   print("OK, I'm counting...");
@@ -25,6 +26,7 @@ void appStoppingSynchronousCode() {
 }
 
 Future<void> appStoppingAsynchronousCode() async {
+  print('// appStoppingAsynchronousCode');
   Future<String> playHideAndSeekTheLongVersion() async {
     var counting = 0;
     await Future(() {
@@ -32,16 +34,27 @@ Future<void> appStoppingAsynchronousCode() async {
         counting = i;
       }
     });
-    return '$counting! Ready or not, here I come!';
+    return '$counting!\nReady or not, here I come!';
   }
 
   print("OK, I'm counting...");
   print(await playHideAndSeekTheLongVersion());
 }
 
-Future<void> oneWayIsolateCommunication() async {
-  final receivePort = ReceivePort();
+void playHideAndSeekTheLongVersion1(SendPort sendPort) {
+  print('// playHideAndSeekTheLongVersion1');
+  var counting = 0;
+  print("OK, I'm counting...");
+  for (var i = 1; i <= 1000000000; i++) {
+    counting = i;
+  }
+  final message = '$counting!\nReady or not, here I come!';
+  Isolate.exit(sendPort, message);
+}
 
+Future<void> oneWayIsolateCommunication() async {
+  print('// oneWayIsolateCommunication');
+  final receivePort = ReceivePort();
   await Isolate.spawn<SendPort>(
     playHideAndSeekTheLongVersion1,
     receivePort.sendPort,
@@ -51,19 +64,21 @@ Future<void> oneWayIsolateCommunication() async {
   print(message);
 }
 
-void playHideAndSeekTheLongVersion1(SendPort sendPort) {
+void playHideAndSeekTheLongVersion2(SendPort sendPort) {
+  print('// playHideAndSeekTheLongVersion2');
+  sendPort.send("OK, I'm counting...");
   var counting = 0;
   for (var i = 1; i <= 1000000000; i++) {
     counting = i;
   }
-  final message = '$counting! Ready or not, here I come!';
-  // 2
-  Isolate.exit(sendPort, message);
+
+  sendPort.send('$counting!\nReady or not, here I come!');
+  sendPort.send(null);
 }
 
 Future<void> sendingMultipleMessages() async {
+  print('// sendingMultipleMessages');
   final receivePort = ReceivePort();
-
   final isolate = await Isolate.spawn<SendPort>(
     playHideAndSeekTheLongVersion2,
     receivePort.sendPort,
@@ -79,37 +94,8 @@ Future<void> sendingMultipleMessages() async {
   });
 }
 
-void playHideAndSeekTheLongVersion2(SendPort sendPort) {
-  sendPort.send("OK, I'm counting...");
-
-  var counting = 0;
-  for (var i = 1; i <= 1000000000; i++) {
-    counting = i;
-  }
-
-  sendPort.send('$counting! Ready or not, here I come!');
-  sendPort.send(null);
-}
-
-Future<void> passingMultipleArgumentsAsList() async {
-  final receivePort = ReceivePort();
-
-  final isolate = await Isolate.spawn<List<Object>>(
-    playHideAndSeekTheLongVersion3,
-    [receivePort.sendPort, 999999999],
-  );
-
-  receivePort.listen((Object? message) {
-    if (message is String) {
-      print(message);
-    } else if (message == null) {
-      receivePort.close();
-      isolate.kill();
-    }
-  });
-}
-
 void playHideAndSeekTheLongVersion3(List<Object> arguments) {
+  print('// playHideAndSeekTheLongVersion3');
   final sendPort = arguments[0] as SendPort;
   final countTo = arguments[1] as int;
 
@@ -120,19 +106,17 @@ void playHideAndSeekTheLongVersion3(List<Object> arguments) {
     counting = i;
   }
 
-  sendPort.send('$counting! Ready or not, here I come!');
+  sendPort.send('$counting!\nReady or not, here I come!');
   sendPort.send(null);
 }
 
-Future<void> passingMultipleArgumentsAsMap() async {
+Future<void> passingMultipleArgumentsAsList() async {
+  print('// passingMultipleArgumentsAsList');
   final receivePort = ReceivePort();
 
-  final isolate = await Isolate.spawn<Map<String, Object>>(
-    playHideAndSeekTheLongVersion4,
-    {
-      'sendPort': receivePort.sendPort,
-      'countTo': 999999999,
-    },
+  final isolate = await Isolate.spawn<List<Object>>(
+    playHideAndSeekTheLongVersion3,
+    [receivePort.sendPort, 1000000000],
   );
 
   receivePort.listen((Object? message) {
@@ -146,6 +130,7 @@ Future<void> passingMultipleArgumentsAsMap() async {
 }
 
 void playHideAndSeekTheLongVersion4(Map<String, Object> arguments) {
+  print('// playHideAndSeekTheLongVersion4');
   final sendPort = arguments['sendPort'] as SendPort;
   final countTo = arguments['countTo'] as int;
 
@@ -156,11 +141,34 @@ void playHideAndSeekTheLongVersion4(Map<String, Object> arguments) {
     counting = i;
   }
 
-  sendPort.send('$counting! Ready or not, here I come!');
+  sendPort.send('$counting!\nReady or not, here I come!');
   sendPort.send(null);
 }
 
+Future<void> passingMultipleArgumentsAsMap() async {
+  print('// passingMultipleArgumentsAsMap');
+  final receivePort = ReceivePort();
+
+  final isolate = await Isolate.spawn<Map<String, Object>>(
+    playHideAndSeekTheLongVersion4,
+    {
+      'sendPort': receivePort.sendPort,
+      'countTo': 1000000000,
+    },
+  );
+
+  receivePort.listen((Object? message) {
+    if (message is String) {
+      print(message);
+    } else if (message == null) {
+      receivePort.close();
+      isolate.kill();
+    }
+  });
+}
+
 Future<void> twoWayCommunication() async {
+  print('// twoWayCommunication');
   final earth = Earth();
   await earth.contactMars();
 }
@@ -180,6 +188,7 @@ class Work {
 }
 
 Future<void> _entryPoint(SendPort sendToEarthPort) async {
+  print('// _entryPoint');
   final receiveOnMarsPort = ReceivePort();
   sendToEarthPort.send(receiveOnMarsPort.sendPort);
 
@@ -226,26 +235,19 @@ class Earth {
     _receiveOnEarthPort.listen((Object? messageFromMars) async {
       await Future<void>.delayed(Duration(seconds: 1));
       print('Message from Mars: $messageFromMars');
-      // 1
       if (messageFromMars is SendPort) {
         _sendToMarsPort = messageFromMars;
         _sendToMarsPort?.send('Hey from Earth');
-      }
-      // 2
-      else if (messageFromMars == 'Hey from Mars') {
+      } else if (messageFromMars == 'Hey from Mars') {
         _sendToMarsPort?.send('Can you help?');
       } else if (messageFromMars == 'sure') {
         _sendToMarsPort?.send('doSomething');
         _sendToMarsPort?.send('doSomethingElse');
-      }
-      // 3
-      else if (messageFromMars is Map) {
+      } else if (messageFromMars is Map) {
         final method = messageFromMars['method'] as String;
         final result = messageFromMars['result'] as int;
         print('The result of $method is $result');
-      }
-      // 4
-      else if (messageFromMars == 'done') {
+      } else if (messageFromMars == 'done') {
         print('shutting down');
         dispose();
       }

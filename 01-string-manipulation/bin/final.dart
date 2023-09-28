@@ -7,10 +7,8 @@ void main() {
   padding();
   splittingAndJoining();
   findAndReplace();
-
   /// Building Strings
   stringBuffer();
-
   /// String Validation
   stringValidation();
   matchingLiteralCharacters();
@@ -20,7 +18,6 @@ void main() {
   escapingSpecialCharacters();
   matchingBeginningEnd();
   validatePassword();
-
   /// Extracting Text
   extractingText();
   substringMultipleMatches();
@@ -29,7 +26,6 @@ void main() {
 
 void changingCase() {
   print('// changingCase');
-
   const userInput = 'sPoNgEbOb@eXaMpLe.cOm';
   final lowercase = userInput.toLowerCase();
   print(lowercase);
@@ -38,21 +34,19 @@ void changingCase() {
 
 void trimming() {
   print('\n// trimming');
-
   const userInput = ' 221B Baker St.   ';
   final trimmed = userInput.trim();
   print(trimmed);
 }
 
 void padding() {
-  print('\n// padding');
+  print('\n/// padding');
   withoutPadding();
   withPadding();
 }
 
 void withoutPadding() {
   print('//   withoutPadding');
-
   // final time = Duration(hours: 1, minutes: 32, seconds: 57);
   final time = Duration(hours: 1, minutes: 2, seconds: 3);
   final hours = time.inHours;
@@ -64,7 +58,6 @@ void withoutPadding() {
 
 void withPadding() {
   print('//   withPadding');
-
   final time = Duration(hours: 1, minutes: 2, seconds: 3);
   final hours = time.inHours;
   final minutes = '${time.inMinutes % 60}'.padLeft(2, '0');
@@ -75,18 +68,15 @@ void withPadding() {
 
 void splittingAndJoining() {
   print('\n// splittingAndJoining');
-
   const csvFileLine = 'Martin,Emma,12,Paris,France';
   final fields = csvFileLine.split(',');
   print(fields);
-
   final joined = fields.join('-');
   print(joined);
 }
 
 void findAndReplace() {
   print('\n// findAndReplace');
-
   const phrase = 'live and learn';
   final withUnderscores = phrase.replaceAll(' ', '_');
   print(withUnderscores);
@@ -120,7 +110,6 @@ void stringBuffer() {
 
 void stringValidation() {
   print('\n// stringValidation');
-
   const text = 'I love Dart';
   print(text.startsWith('I'));
   print(text.endsWith('Dart'));
@@ -130,7 +119,6 @@ void stringValidation() {
 
 void matchingLiteralCharacters() {
   print('\n// matchingLiteralCharacters');
-
   final regex = RegExp('cat');
   print(regex.hasMatch('concatenation'));
   print(regex.hasMatch('dog'));
@@ -142,7 +130,6 @@ void matchingLiteralCharacters() {
 
 void matchingAnySingleCharacter() {
   print('\n// matchingAnySingleCharacter');
-
   final matchSingle = RegExp('c.t');
   print(matchSingle.hasMatch('cat'));
   print(matchSingle.hasMatch('cot'));

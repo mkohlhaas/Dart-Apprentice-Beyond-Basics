@@ -326,6 +326,7 @@ void closures() {
       counter += 1;
       return counter;
     }
+
     return incrementCounter;
   }
 

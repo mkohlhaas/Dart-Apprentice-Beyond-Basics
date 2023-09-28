@@ -4,14 +4,14 @@ import 'dart:io';
 
 // activate just one line to make more sense of the output
 Future<void> main() async {
-  // await readAsString();
+  await readAsString();
   // readFromStream();
   // await readFromStreamAsynchronousForLoop();
   // errorHandlingUsingCallbacks();
   // await errorHandlingUsingTryCatch();
   // cancellingStreams();
   // transformingStreams();
-  creatingStreamsFromScratch();
+  // creatingStreamsFromScratch();
 }
 
 Future<void> readAsString() async {
@@ -36,7 +36,7 @@ Future<void> readFromStreamAsynchronousForLoop() async {
   print('// readFromStreamAsynchronousForLoop');
   final file = File('assets/text_long.txt');
   final stream = file.openRead();
-  await for (var data in stream) {
+  await for (final data in stream) {
     print(data.length);
   }
 }
@@ -167,12 +167,12 @@ Iterable<int> hundredSquares() sync* {
 void usingAsynchronousGenerators() {
   print('// usingAsynchronousGenerators');
   final stream = consciousness();
-
   stream.listen((data) {
     print(data);
   });
 }
 
+// async* function returns a Stream
 Stream<String> consciousness() async* {
   print('// consciousness');
   final data = ['con', 'scious', 'ness'];
