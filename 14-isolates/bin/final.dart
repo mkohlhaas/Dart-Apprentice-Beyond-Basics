@@ -4,11 +4,12 @@ import 'dart:isolate';
 Future<void> main() async {
   // appStoppingSynchronousCode();
   // await appStoppingAsynchronousCode();
-  await oneWayIsolateCommunication();
+  // await oneWayIsolateCommunication();
   // await sendingMultipleMessages();
   // await passingMultipleArgumentsAsList();
   // await passingMultipleArgumentsAsMap();
   // await twoWayCommunication();
+  await onExitTest();
 }
 
 void appStoppingSynchronousCode() {
@@ -71,9 +72,8 @@ void playHideAndSeekTheLongVersion2(SendPort sendPort) {
   for (var i = 1; i <= 1000000000; i++) {
     counting = i;
   }
-
   sendPort.send('$counting!\nReady or not, here I come!');
-  sendPort.send(null);
+  // sendPort.send(null);
 }
 
 Future<void> sendingMultipleMessages() async {
@@ -82,6 +82,7 @@ Future<void> sendingMultipleMessages() async {
   final isolate = await Isolate.spawn<SendPort>(
     playHideAndSeekTheLongVersion2,
     receivePort.sendPort,
+    onExit: receivePort.sendPort,
   );
 
   receivePort.listen((Object? message) {
@@ -259,4 +260,50 @@ class Earth {
     _marsIsolate?.kill();
     _marsIsolate = null;
   }
+}
+
+void playHideAndSeek(SendPort sendPort) {
+  print('// playHideAndSeek');
+  var counting = 0;
+  print("OK, I'm counting...");
+  for (var i = 1; i <= 10000000000 ~/ 2; i++) {
+    counting = i;
+  }
+  print('Result: $counting');
+
+  // final message = '$counting!\nReady or not, here I come!';
+  // Isolate.exit(sendPort, message);
+}
+
+void endlessLoop(SendPort sendPort) {
+  do {
+    sleep(Duration(seconds: 15));
+    print('Still looping...');
+  } while (true);
+}
+
+Future<void> onExitTest() async {
+  print('// oneWayIsolateCommunication');
+  final receivePort = ReceivePort();
+  Isolate isolate = await Isolate.spawn<SendPort>(
+    playHideAndSeek,
+    receivePort.sendPort,
+    onExit: receivePort.sendPort,
+  );
+  print(isolate);
+
+  receivePort.listen((Object? message) {
+    if (message == null) {
+      print('Spawned isolate finished!');
+      // receivePort.close();
+    }
+  });
+
+  isolate = await Isolate.spawn<SendPort>(
+    endlessLoop,
+    receivePort.sendPort,
+  );
+
+  // final message = await receivePort.first as String;
+  // print(message);
 }

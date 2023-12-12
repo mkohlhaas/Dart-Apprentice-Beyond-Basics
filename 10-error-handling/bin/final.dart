@@ -1,16 +1,16 @@
 import 'dart:convert';
 
 void main() {
-  dividingByZero();
+  // dividingByZero();
   // noSuchMethod();
-  formatException();
+  // formatException();
   // readingStackTraces();
-  debugging();
-  catchingExceptions();
+  // debugging();
+  // catchingExceptions();
   handlingSpecificExceptions();
-  handlingMultipleExceptions();
-  finallyBlock();
-  writingCustomExceptions();
+  // handlingMultipleExceptions();
+  // finallyBlock();
+  // writingCustomExceptions();
 }
 
 void dividingByZero() {
@@ -81,8 +81,8 @@ void debugging() {
 void catchingExceptions() {
   print('\n// catchingExceptions');
 
-  // const json = 'abc';
-  const json = '{"name":"bob"}';
+  const json = 'abc';
+  // const json = '{"name":"bob"}';
   try {
     dynamic result = jsonDecode(json);
     print(result);
@@ -99,7 +99,7 @@ void handlingSpecificExceptions() {
   const json = 'abc';
   try {
     dynamic result = jsonDecode(json);
-    print(result);
+    print('$result');
   } on FormatException {
     print('The JSON string was invalid.');
   }
