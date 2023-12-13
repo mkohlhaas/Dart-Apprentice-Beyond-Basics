@@ -1,25 +1,25 @@
 // Futures have three possible states:
-// - Uncompleted.
-// - Completed with a value.
-// - Completed with an error.
+// - Uncompleted
+// - Completed (with a value/with an error)
 
 // There are two ways to get at the value after a future completes.
-// - with callbacks
-// - with async-await
+// With:
+// - a callback
+// - async-await
 
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 
-// activate only one line at a time otherwise code will intersperse
+// activate one line at a time otherwise code will intersperse
 Future<void> main() async {
   // await futureType();
   // await usingCallbacks();
   // await usingAsyncAwait();
   // await usingAsyncAwaitWithErrorHandling();
-  await asynchronousNetworkRequest();
-  // await creatingFutureFromScratch();
+  // await asynchronousNetworkRequest();
+  await creatingFutureFromScratch();
 }
 
 Future<void> futureType() async {
@@ -165,8 +165,8 @@ class Todo {
   }
 }
 
-// Create a Future using
-// - Future constructors: unnamed constructor, value, error, delayed.
+// Create a Future using:
+// - Future constructors: unnamed constructor, value, error, delayed. (See also screenshot in this folder.)
 // - a return value from an async method
 // - a Completer
 Future<void> creatingFutureFromScratch() async {

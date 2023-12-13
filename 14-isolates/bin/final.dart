@@ -16,7 +16,7 @@ void appStoppingSynchronousCode() {
   print('// appStoppingSynchronousCode');
   String playHideAndSeekTheLongVersion() {
     var counting = 0;
-    for (var i = 1; i <= 10000000000; i++) {
+    for (var i = 1; i <= 1000000000; i++) {
       counting = i;
     }
     return '$counting!\nReady or not, here I come!';
@@ -28,6 +28,7 @@ void appStoppingSynchronousCode() {
 
 Future<void> appStoppingAsynchronousCode() async {
   print('// appStoppingAsynchronousCode');
+
   Future<String> playHideAndSeekTheLongVersion() async {
     var counting = 0;
     await Future(() {
@@ -79,6 +80,7 @@ void playHideAndSeekTheLongVersion2(SendPort sendPort) {
 Future<void> sendingMultipleMessages() async {
   print('// sendingMultipleMessages');
   final receivePort = ReceivePort();
+
   final isolate = await Isolate.spawn<SendPort>(
     playHideAndSeekTheLongVersion2,
     receivePort.sendPort,
@@ -89,6 +91,7 @@ Future<void> sendingMultipleMessages() async {
     if (message is String) {
       print(message);
     } else if (message == null) {
+      print('Isolate is saying bye bye!');
       receivePort.close();
       isolate.kill();
     }
@@ -124,6 +127,7 @@ Future<void> passingMultipleArgumentsAsList() async {
     if (message is String) {
       print(message);
     } else if (message == null) {
+      print('Isolate is saying bye bye!');
       receivePort.close();
       isolate.kill();
     }
@@ -162,6 +166,7 @@ Future<void> passingMultipleArgumentsAsMap() async {
     if (message is String) {
       print(message);
     } else if (message == null) {
+      print('Isolate is saying bye bye!');
       receivePort.close();
       isolate.kill();
     }
@@ -266,7 +271,7 @@ void playHideAndSeek(SendPort sendPort) {
   print('// playHideAndSeek');
   var counting = 0;
   print("OK, I'm counting...");
-  for (var i = 1; i <= 10000000000 ~/ 2; i++) {
+  for (var i = 1; i <= 1000000000 ~/ 2; i++) {
     counting = i;
   }
   print('Result: $counting');
@@ -277,7 +282,7 @@ void playHideAndSeek(SendPort sendPort) {
 
 void endlessLoop(SendPort sendPort) {
   do {
-    sleep(Duration(seconds: 15));
+    sleep(Duration(seconds: 3));
     print('Still looping...');
   } while (true);
 }
