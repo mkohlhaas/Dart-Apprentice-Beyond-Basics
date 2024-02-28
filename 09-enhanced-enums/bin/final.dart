@@ -188,7 +188,8 @@ void addingMixins() {
 
 enum Default<T extends Object> {
   font<String>('roboto'),
-  size<double>(17.0),
+  // size<double>(17.0),
+  size<Size>(Size.medium),
   weight<int>(400);
 
   const Default(this.value);
@@ -200,11 +201,14 @@ void usingGenerics() {
   print('\n// usingGenerics');
 
   String defaultFont = Default.font.value;
-  double defaultSize = Default.size.value;
+  // double defaultSize = Default.size.value;
+  Size defaultSize = Default.size.value;
   int defaultWeight = Default.weight.value;
   print(defaultFont);
   print(defaultSize);
   print(defaultWeight);
+
+  print(Size.small.value);
 }
 
 enum Size {

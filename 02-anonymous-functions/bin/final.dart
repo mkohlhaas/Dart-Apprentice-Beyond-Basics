@@ -147,7 +147,7 @@ void sorting() {
   desserts.sort();
   print(desserts);
 
-  desserts.sort((d1, d2) => d1.length.compareTo(d2.length));
+  desserts.sort((s1, s2) => s1.length.compareTo(s2.length));
   print(desserts);
 }
 
@@ -162,10 +162,7 @@ void declarative() {
   print('\n// declarative');
 
   const desserts = ['cake', 'pie', 'donuts', 'brownies'];
-  final bigTallDesserts = desserts
-      .where((dessert) => dessert.length > 5)
-      .map((dessert) => dessert.toUpperCase())
-      .toList();
+  final bigTallDesserts = desserts.where((dessert) => dessert.length > 5).map((dessert) => dessert.toUpperCase()).toList();
   print(bigTallDesserts);
 }
 
@@ -298,11 +295,11 @@ void typedefs() {
   int number = 42;
 
   // run-time type checks
-  print(code is ZipCode);
-  print(code is int);
+  print(code is ZipCode); // true
+  print(code is int); // true
   print('');
-  print(number is ZipCode);
-  print(number is int);
+  print(number is ZipCode); // true
+  print(number is int); // true
 }
 
 void closures() {
@@ -320,8 +317,10 @@ void closures() {
   incrementCounter();
   print(counter);
 
+  // int Function() countingFunction() {
   Function countingFunction() {
     var counter = 0;
+
     incrementCounter() {
       counter += 1;
       return counter;
@@ -332,9 +331,9 @@ void closures() {
 
   final counter1 = countingFunction();
   final counter2 = countingFunction();
-  print(counter1());
-  print(counter1());
-  print(counter1());
-  print(counter2());
-  print(counter2());
+  print(counter1()); // 1
+  print(counter1()); // 2
+  print(counter1()); // 3
+  print(counter2()); // 1
+  print(counter2()); // 2
 }

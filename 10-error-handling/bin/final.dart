@@ -181,7 +181,7 @@ void writingCustomExceptions() {
   try {
     validatePassword(password);
     print('Password is valid');
-  } on PasswordTooShort catch (e, s) {
+  } on PasswordTooShort catch (e, s) { // e = exception, s = stack
     print('Stacktrace:\n${s.toString()}');
     print(e.message);
   } on NoLowercase catch (e) {

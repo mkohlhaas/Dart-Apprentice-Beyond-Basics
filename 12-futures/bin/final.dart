@@ -14,12 +14,16 @@ import 'package:http/http.dart' as http;
 
 // activate one line at a time otherwise code will intersperse
 Future<void> main() async {
-  // await futureType();
+  await futureType();
   // await usingCallbacks();
   // await usingAsyncAwait();
   // await usingAsyncAwaitWithErrorHandling();
   // await asynchronousNetworkRequest();
+<<<<<<< Updated upstream
   await creatingFutureFromScratch();
+=======
+  // await creatingFutureFromScratch();
+>>>>>>> Stashed changes
 }
 
 Future<void> futureType() async {
